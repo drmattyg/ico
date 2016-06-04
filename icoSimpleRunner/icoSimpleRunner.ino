@@ -12,6 +12,9 @@
 
 #define START 0
 #define STOP 1
+#define OPEN LOW
+#define CLOSED HIGH
+
 int speed = 255;
 boolean debounceLeft = false;
 boolean debounceRight = false;
@@ -24,6 +27,10 @@ void blink(int times) {
       digitalWrite(LED_PIN, LOW);
       delay(250);   
   }
+}
+
+void valve(int state) {
+  digitalWrite(VALVE_PIN, state);
 }
 
 void ignitor() {
@@ -40,11 +47,11 @@ void setup() {
   pinMode(LIMIT_LEFT, INPUT_PULLUP);
   pinMode(LIMIT_RIGHT, INPUT_PULLUP);
   pinMode(DIRECTION_PIN, OUTPUT);
+  digitalWrite(VALVE_PIN, HIGH);
+  pinMode(VALVE_PIN, OUTPUT);
   digitalWrite(IGNITOR_PIN, HIGH);
   pinMode(IGNITOR_PIN, OUTPUT);
   digitalWrite(DIRECTION_PIN, HIGH);
-  digitalWrite(OUTPUT_PIN, HIGH);
-
 }
 
 void switchDirection() {
@@ -67,8 +74,8 @@ void loop() {
       // Serial.println("RIGHT");
       // blink(1);
       drive(STOP); 
-
-      ignitor();
+      valve(CLOSED);
+      delay(100);
       debounceLeft = true;
       switchDirection();
       drive(START);
@@ -80,6 +87,7 @@ void loop() {
       // Serial.println("LEFT");
       // blink(2);
       drive(STOP);
+      valve(OPEN);
       ignitor();
       debounceRight = true;
       switchDirection();
