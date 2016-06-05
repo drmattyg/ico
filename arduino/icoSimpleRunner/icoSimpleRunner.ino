@@ -52,6 +52,8 @@ void setup() {
   digitalWrite(IGNITOR_PIN, HIGH);
   pinMode(IGNITOR_PIN, OUTPUT);
   digitalWrite(DIRECTION_PIN, HIGH);
+  blink(2);
+  digitalWrite(OUTPUT_PIN, HIGH);
 }
 
 void switchDirection() {
